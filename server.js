@@ -5,6 +5,11 @@ const { animals } = require("./data/animals");
 const fs = require('fs');
 const path = require('path');
 
+// parse incoming string or array data
+app.use(express.urlencoded({ extended: true }));
+// parse incoming JSON data
+app.use(express.json());
+
 function filterByQuery(query, animalsArray) {
   let personalityTraitsArray = [];
   // Note that we save the animalsArray as filteredResults here:
@@ -61,9 +66,9 @@ function createNewAnimal(body, animalsArray) {
     fs.writeFileSync(
         path.join(__dirname, './data/animals.json'),
         JSON.stringify({ animals: animalsArray }, null, 2)
-    );
-    // return finished code to post route for response
-    return animal;
+        );
+        // return finished code to post route for response
+        return animal;
 }
 
 function validateAnimal(animal) {
@@ -98,11 +103,6 @@ app.get('/api/animals/:id', (req, res) => {
         res.send(404);
     }
 });
-
-// parse incoming string or array data
-app.use(express.urlencoded({ extended: true }));
-// parse incoming JSON data
-app.use(express.json());
 
 app.post('/api/animals', (req, res) => { 
     // set id based on what the next index of the array will be 
